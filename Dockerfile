@@ -94,8 +94,8 @@ ADD h2o /opt/h2oai/h2o
 
 EXPOSE 12345
 
-COPY ./scripts/start.sh /opt/start.sh
-RUN chmod +x /opt/start.sh
+COPY ./scripts/start.sh /opt/h2oai/start.sh
+RUN chmod +x /opt/h2oai/start.sh
 
 # Nimbix Integrations
 ADD ./NAE/AppDef.json /etc/NAE/AppDef.json
