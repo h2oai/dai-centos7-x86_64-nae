@@ -88,6 +88,8 @@ RUN \
   pip3.6 install cython && \
   pip3.6 install -r /opt/h2oai/requirements.txt
 
+ADD h2o /opt/h2oai/h2o
+
 EXPOSE 12345
 
 COPY ./scripts/start.sh /opt/start.sh
