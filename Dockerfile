@@ -55,7 +55,7 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /e
 RUN apt-get install -y \
   python3.6 \
   python3.6-dev \
-  python3.6-venv
+  python3.6-venv \
   dirmngr
 
 # Install Node.js
