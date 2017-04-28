@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/usr/bin/python3.6 -m /opt/h2oai/h2o
+cd /opt/h2oai && /usr/bin/python3.6 -m h2o

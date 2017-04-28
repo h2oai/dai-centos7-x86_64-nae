@@ -94,6 +94,7 @@ ADD h2o /opt/h2oai/h2o
 
 EXPOSE 12345
 
+WORKDIR /opt
 COPY ./scripts/start-h2oai.sh /opt/start-h2oai.sh
 RUN chmod +x /opt/start-h2oai.sh
 
