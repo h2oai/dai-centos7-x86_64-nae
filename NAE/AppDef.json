@@ -27,7 +27,7 @@
     ],
     "commands": {
         "H2oAI": {
-            "path": "/opt/start.sh",
+            "path": "/opt/start-h2oai.sh",
             "interactive": true,
             "name": "H2oAI Server",
             "description": "Run the H2oAI Server",
