@@ -55,13 +55,13 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /e
 
 # Install H2o dependancies
 RUN apt-get install -y \
+  python3-pip \
   python3.6 \
   python3.6-dev \
-  python3.6-venv \
   dirmngr
 
 # Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \                                                                                                      
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
   apt-get install -y nodejs
 
 # Get R
@@ -86,13 +86,9 @@ RUN mkdir /opt/h2oai
 WORKDIR /opt/h2oai
 ADD requirements.txt /opt/h2oai/requirements.txt
 RUN \
-  python3.6 -m venv h2o_venv36 && \
-  cd h2o_venv36 && \
-  /bin/bash -c "source bin/activate" && \
-  cd bin && \
-  ./pip3.6 install numpy && \
-  ./pip3.6 install cython && \
-  ./pip3.6 install -r /opt/h2oai/requirements.txt
+  python3.6 -m pip install numpy && \
+  python3.6 -m pip install cython && \
+  python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
 ADD h2o /opt/h2oai/h2o
 

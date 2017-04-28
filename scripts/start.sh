@@ -9,10 +9,4 @@
 set -e
 
 # Use 90% of RAM for H2O.
-memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
-memTotalMb=$[ $memTotalKb / 1024 ]
-tmp=$[ $memTotalMb * 90 ]
-xmxMb=$[ $tmp / 100 ]
-
-/opt/h2oai/h2o_venv36/bin/activate 
-python3.6 -m h2o
+cd /opt/h2oai && /usr/bin/python3.6 -m h2o
