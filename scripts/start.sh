@@ -14,4 +14,5 @@ memTotalMb=$[ $memTotalKb / 1024 ]
 tmp=$[ $memTotalMb * 90 ]
 xmxMb=$[ $tmp / 100 ]
 
-/usr/bin/python3.6 -m h2o
+/opt/h2oai/h2o_venv36/bin/activate 
+python3.6 -m h2o

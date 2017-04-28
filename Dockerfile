@@ -35,6 +35,8 @@ RUN apt-get -y install \
   screen \
   wget \
   apt-utils \
+  python-software-properties \
+  software-properties-common \
   grep
 
 # Clean and generate locales
@@ -84,9 +86,13 @@ RUN mkdir /opt/h2oai
 WORKDIR /opt/h2oai
 ADD requirements.txt /opt/h2oai/requirements.txt
 RUN \
-  pip3.6 install numpy && \
-  pip3.6 install cython && \
-  pip3.6 install -r /opt/h2oai/requirements.txt
+  python3.6 -m venv h2o_venv36 && \
+  cd h2o_venv36 && \
+  /bin/bash -c "source bin/activate" && \
+  cd bin && \
+  ./pip3.6 install numpy && \
+  ./pip3.6 install cython && \
+  ./pip3.6 install -r /opt/h2oai/requirements.txt
 
 ADD h2o /opt/h2oai/h2o
 
