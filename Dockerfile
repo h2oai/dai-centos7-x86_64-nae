@@ -80,19 +80,30 @@ RUN apt-get install -y oracle-java8-installer && \
   apt-get clean && \
   rm -rf /var/cache/apt/*
 
-# Install H2o
-
+# Install Python Dependancies
 RUN mkdir /opt/h2oai
 WORKDIR /opt/h2oai
 ADD requirements.txt /opt/h2oai/requirements.txt
 RUN \
+  python3.6 -m pip install --upgrade pip && \
   python3.6 -m pip install numpy && \
   python3.6 -m pip install cython && \
   python3.6 -m pip install jupyter && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
+# Add H2oAI
 ADD h2o /opt/h2oai/h2o
 
+# Add h2o3-xgboost
+WORKDIR /opt
+ADD h2o-3.11.0.99999 /opt/h2o3-xgboost
+COPY ./scripts/start-xgboost.sh /opt/start-xgboost.sh
+RUN \
+  chown -R nimbix:nimbix /opt/h2o3-xgboost && \
+  chmod +x /opt/start-xgboost.sh && \
+  python3.6 -m pip install /opt/h2o3-xgboost/python/h2o-*-py2.py3-none-any.whl
+
+EXPOSE 54321
 EXPOSE 12345
 
 WORKDIR /opt
