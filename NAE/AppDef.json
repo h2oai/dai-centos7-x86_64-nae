@@ -18,7 +18,7 @@
         "ngq7",
         "ngo8"
     ],
-    "scale_max": 16,
+    "scale_max": 1,
     "vault-types": [
         "FILE",
         "BLOCK",
@@ -64,10 +64,10 @@
             "description": "Run the H2oAI Server",
             "parameters": {}
         },
-      "H2o3 Xgboost": {
+      "H2o3-Xgboost": {
             "path": "/opt/start-xgboost.sh",
             "interactive": true,
-            "name": "H2o3 Xgboost Server",
+            "name": "H2o3-Xgboost Server",
             "description": "Run the H2o Server",
             "parameters": {}
         },

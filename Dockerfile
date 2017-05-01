@@ -65,8 +65,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
   apt-get install -y nodejs
 
 # Get R
-RUN \
-  apt-get install -y r-base r-base-dev && \
+RUN apt-get install -y r-base r-base-dev && \
   wget https://cran.cnr.berkeley.edu/src/contrib/data.table_1.10.4.tar.gz && \
   wget https://cran.cnr.berkeley.edu/src/contrib/lazyeval_0.2.0.tar.gz && \
   wget https://cran.cnr.berkeley.edu/src/contrib/Rcpp_0.12.10.tar.gz && \
