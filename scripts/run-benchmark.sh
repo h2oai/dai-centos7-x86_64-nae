@@ -8,4 +8,5 @@ ln -sf /data/train.txt .
 echo "Starting Benchmark on $NGPU GPUs"
 export N=$NGPU
 make run 2>&1 | tee log$(N).txt
-cp log$(N).txt /data
+tar -cvfX benchmarks_`date +%Y%m%d_%H%M%S`.tar *.txt
+cp *.tar /data
