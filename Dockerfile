@@ -88,6 +88,7 @@ ADD requirements.txt /opt/h2oai/requirements.txt
 RUN \
   python3.6 -m pip install numpy && \
   python3.6 -m pip install cython && \
+  python3.6 -m pip install jupyter && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
 ADD h2o /opt/h2oai/h2o
