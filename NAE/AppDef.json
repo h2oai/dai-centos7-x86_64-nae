@@ -64,6 +64,13 @@
             "description": "Run the H2oAI Server",
             "parameters": {}
         },
+      "H2o3 Xgboost": {
+            "path": "/opt/start-xgboost.sh",
+            "interactive": true,
+            "name": "H2o3 Xgboost Server",
+            "description": "Run the H2o Server",
+            "parameters": {}
+        },
       "Jupyter": {
             "path": "/opt/start-jupyter.sh",
             "interactive": true,
