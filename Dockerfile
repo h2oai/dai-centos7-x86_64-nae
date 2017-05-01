@@ -91,9 +91,6 @@ RUN \
   python3.6 -m pip install jupyter && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
-# Add H2oAI
-ADD h2o /opt/h2oai/h2o
-
 # Add h2o3-xgboost
 WORKDIR /opt
 ADD h2o-3.11.0.99999 /opt/h2o3-xgboost
@@ -105,11 +102,10 @@ RUN \
 
 EXPOSE 54321
 EXPOSE 12345
+EXPOSE 8888
 
-WORKDIR /opt
-ENV CUDA_HOME=/usr/local/cuda-8.0
-ENV PATH=$CUDA_HOME/bin:$PATH
-ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+# Add H2oAI
+ADD h2o /opt/h2oai/h2o
 
 # Add benchmark and start script
 ADD h2oaiglm /opt/h2oaiglm
@@ -132,3 +128,8 @@ RUN mkdir -p /usr/lib/JARVICE && cp -a /tmp/image-common-master/tools /usr/lib/J
 RUN cp -a /tmp/image-common-master/etc /etc/JARVICE && chmod 755 /etc/JARVICE && rm -rf /tmp/image-common-master
 RUN mkdir -m 0755 /data && chown nimbix:nimbix /data
 RUN sed -ie 's/start on.*/start on filesystem/' /etc/init/ssh.conf
+
+USER nimbix
+ENV CUDA_HOME=/usr/local/cuda-8.0
+ENV PATH=$CUDA_HOME/bin:$PATH
+ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
