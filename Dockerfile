@@ -98,6 +98,13 @@ WORKDIR /opt
 COPY ./scripts/start-h2oai.sh /opt/start-h2oai.sh
 RUN chmod +x /opt/start-h2oai.sh
 
+# Add benchmarking
+ENV CUDA_HOME=/usr/local/cuda-8.0
+ENV PATH=$CUDA_HOME/bin:$PATH
+ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+ENV NGPUS=16
+ADD h2oaiglm /opt/h2oaiglm
+
 # Nimbix Integrations
 ADD ./NAE/AppDef.json /etc/NAE/AppDef.json
 ADD ./NAE/AppDef.png /etc//NAE/default.png
