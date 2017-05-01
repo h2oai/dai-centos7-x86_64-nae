@@ -1,5 +1,5 @@
 FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
-MAINTAINER Nimbix, Inc. <support@nimbix.net>
+MAINTAINER H2o.ai <ops@h2o.ai>
 
 # Nimbix base OS
 ENV DEBIAN_FRONTEND noninteractive
