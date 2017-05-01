@@ -102,8 +102,9 @@ RUN chmod +x /opt/start-h2oai.sh
 ENV CUDA_HOME=/usr/local/cuda-8.0
 ENV PATH=$CUDA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
-ENV NGPUS=16
+ENV N=16
 ADD h2oaiglm /opt/h2oaiglm
+ADD scripts/run-benchmark.sh /opt/run-benchmark.sh
 
 # Nimbix Integrations
 ADD ./NAE/AppDef.json /etc/NAE/AppDef.json
