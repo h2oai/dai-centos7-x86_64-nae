@@ -3,7 +3,7 @@ export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 export N=$1
 
-DATADIR=/data/benchmarks_gpu$N_`date +%Y%m%d_%H%M``
+DATADIR=/data/benchmarks_gpu$N_`date +%Y%m%d_%H%M`
 
 cd /opt/h2oaiglm/src
 make -j gpu cpu
