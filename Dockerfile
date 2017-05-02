@@ -85,19 +85,26 @@ WORKDIR /opt/h2oai
 ADD requirements.txt /opt/h2oai/requirements.txt
 RUN \
   python3.6 -m pip install --upgrade pip && \
+  python3.6 -m pip install setuptools && \
+  python3.6 -m pip install python-dateutil && \
   python3.6 -m pip install numpy && \
   python3.6 -m pip install cython && \
   python3.6 -m pip install jupyter && \
+  python3.6 -m pip install tensorflow-gpu && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
-# Add h2o3-xgboost
-WORKDIR /opt
-ADD h2o-3.11.0.99999 /opt/h2o3-xgboost
-COPY ./scripts/start-xgboost.sh /opt/start-xgboost.sh
 RUN \
-  chown -R nimbix:nimbix /opt/h2o3-xgboost && \
-  chmod +x /opt/start-xgboost.sh && \
-  python3.6 -m pip install /opt/h2o3-xgboost/python/h2o-*-py2.py3-none-any.whl
+  python3.6 -m pip install pycuda
+
+WORKDIR /opt
+
+# Add h2o3-xgboost
+ADD h2o-3.11.0.99999 /opt/h2o-3
+COPY ./scripts/start-h2o.sh /opt/start-h2o.sh
+RUN \
+  chown -R nimbix:nimbix /opt/h2o-3 && \
+  chmod +x /opt/start-h2o.sh && \
+  python3.6 -m pip install /opt/h2o-3/python/h2o-*-py2.py3-none-any.whl
 
 EXPOSE 54321
 EXPOSE 12345
@@ -105,6 +112,10 @@ EXPOSE 8888
 
 # Add H2oAI
 ADD h2o /opt/h2oai/h2o
+
+ADD ./scripts/start-jupyter.sh
+RUN \
+  chmod +x /opt/start-jupyter.sh
 
 # Add benchmark and start script
 ADD h2oaiglm /opt/h2oaiglm
