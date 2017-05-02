@@ -91,40 +91,36 @@ RUN \
   python3.6 -m pip install cython && \
   python3.6 -m pip install jupyter && \
   python3.6 -m pip install tensorflow-gpu && \
-  python3.6 -m pip install -r /opt/h2oai/requirements.txt
-
-RUN \
+  python3.6 -m pip install -r /opt/h2oai/requirements.txt && \
   python3.6 -m pip install pycuda
 
 WORKDIR /opt
 
 # Add h2o3-xgboost
 ADD h2o-3.11.0.99999 /opt/h2o-3
-COPY ./scripts/start-h2o.sh /opt/start-h2o.sh
+ADD h2o /opt/h2oai/h2o
+ADD h2oaiglm /opt/h2oaiglm
+COPY scripts/start-h2o.sh /opt/start-h2o.sh
+COPY scripts/start-jupyter.sh /opt/start-jupyter.sh
+COPY scripts/run-benchmark.sh /opt/run-benchmark.sh
+COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
+
+
 RUN \
-  chown -R nimbix:nimbix /opt/h2o-3 && \
+  chown -R nimbix:nimbix /opt && \
   chmod +x /opt/start-h2o.sh && \
+  chmod +x /opt/start-jupyter.sh && \
+  chmod +x /opt/start-h2oai.sh && \
+  chmod +x /opt/run-benchmark.sh
+
+RUN \
   python3.6 -m pip install /opt/h2o-3/python/h2o-*-py2.py3-none-any.whl
+
+# configure Jupyter with default password h2oai
 
 EXPOSE 54321
 EXPOSE 12345
 EXPOSE 8888
-
-# Add H2oAI
-ADD h2o /opt/h2oai/h2o
-
-ADD ./scripts/start-jupyter.sh
-RUN \
-  chmod +x /opt/start-jupyter.sh
-
-# Add benchmark and start script
-ADD h2oaiglm /opt/h2oaiglm
-ADD scripts/run-benchmark.sh /opt/run-benchmark.sh
-COPY ./scripts/start-h2oai.sh /opt/start-h2oai.sh
-RUN \
-  chown -R nimbix:nimbix /opt/h2oaiglm && \
-  chmod +x /opt/start-h2oai.sh && \
-  chmod +x /opt/run-benchmark.sh 
 
 # Nimbix Integrations
 ADD ./NAE/AppDef.json /etc/NAE/AppDef.json
@@ -143,3 +139,7 @@ USER nimbix
 ENV CUDA_HOME=/usr/local/cuda-8.0
 ENV PATH=$CUDA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+
+# configure Jupyter with default password h2oai
+RUN jupyter notebook --generate-config
+COPY configs/jupyter_notebook_config.json /home/nimbix/.jupyter/jupyter_notebook_config.json
