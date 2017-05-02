@@ -1,1 +1,0 @@
-http://%PUBLICADDR%:12345/

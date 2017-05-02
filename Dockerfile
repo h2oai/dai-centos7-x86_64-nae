@@ -37,6 +37,7 @@ RUN apt-get -y install \
   apt-utils \
   python-software-properties \
   software-properties-common \
+  nginx \
   grep
 
 # Clean and generate locales
@@ -120,13 +121,19 @@ RUN \
 
 EXPOSE 54321
 EXPOSE 12345
+EXPOSE 443
 EXPOSE 8888
+
+# Configure Nginx
+COPY configs/default /etc/nginx/sites-enabled/default
+COPY configs/notebook-site /etc/nginx/sites-enabled/notebook-site
+COPY configs/httpredirect.conf /etc/nginx/conf.d/httpredirect.conf
 
 # Nimbix Integrations
 ADD ./NAE/AppDef.json /etc/NAE/AppDef.json
 ADD ./NAE/AppDef.png /etc//NAE/default.png
 ADD ./NAE/screenshot.png /etc/NAE/screenshot.png
-ADD ./NAE/url.txt /etc/NAE/url.txt
+RUN echo "https://%PUBLICAADR%//" > /etc/NAE/url.txt
 
 # Nimbix JARVICE emulation
 EXPOSE 22
@@ -135,6 +142,7 @@ RUN cp -a /tmp/image-common-master/etc /etc/JARVICE && chmod 755 /etc/JARVICE &&
 RUN mkdir -m 0755 /data && chown nimbix:nimbix /data
 RUN sed -ie 's/start on.*/start on filesystem/' /etc/init/ssh.conf
 
+# Set user ENV
 USER nimbix
 ENV CUDA_HOME=/usr/local/cuda-8.0
 ENV PATH=$CUDA_HOME/bin:$PATH
