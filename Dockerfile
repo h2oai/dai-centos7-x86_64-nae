@@ -51,6 +51,8 @@ RUN \
   apt-get install -y \
   python3.6 \
   python3.6-dev \
+  python3-pip \
+  python3-dev \
   nodejs \
   libgtk2.0-0 \
   dirmngr 
@@ -76,6 +78,12 @@ RUN \
 ADD requirements.txt /opt/h2oai/requirements.txt
 
 RUN \
+  /usr/bin/pip3 install --upgrade pip && \
+  /usr/bin/pip3 install numpy && \
+  /usr/bin/pip3 install cython && \
+  /usr/bin/pip3 install pandas && \
+  /usr/bin/pip3 install -r /opt/h2oai/requirements.txt && \
+  /usr/bin/pip3 install psutil && \
   python3.6 -m pip install --upgrade pip && \
   python3.6 -m pip install setuptools && \
   python3.6 -m pip install python-dateutil && \
