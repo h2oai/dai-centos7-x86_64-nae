@@ -65,7 +65,7 @@
             "parameters": {}
         },
       "Jupyter": {
-            "path": "/opt/start-jupyter.sh",
+            "path": "/usr/local/bin/nimbix_notebook",
             "interactive": true,
             "name": "Jupyter Notebook",
             "description": "Launch Jupyter Notebook, ssh tunnel to get secure access, ex: ssh -L 8888:localhost:8888 nimbix@<public_ip>",
