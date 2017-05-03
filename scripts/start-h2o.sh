@@ -5,8 +5,6 @@
 
 set -e
 
-sudo /sbin/init
-
 d=`dirname $0`
 
 # Use 90% of RAM for H2O.

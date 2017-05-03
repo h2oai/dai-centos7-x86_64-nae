@@ -105,8 +105,3 @@ RUN \
 RUN \
   python3.6 -m pip install /opt/h2o-3/python/h2o-*-py2.py3-none-any.whl
 
-# Set user ENV
-USER nimbix
-ENV CUDA_HOME=/usr/local/cuda-8.0
-ENV PATH=$CUDA_HOME/bin:$PATH
-ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
