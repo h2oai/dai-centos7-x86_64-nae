@@ -31,7 +31,8 @@ RUN \
   apt-get -y install \
   python-software-properties \
   software-properties-common \
-  iputils-ping 
+  iputils-ping \
+  cpio 
 
 # Setup Repos
 RUN \
