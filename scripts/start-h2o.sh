@@ -30,7 +30,7 @@ fi
 
 java -Xmx${xmxMb}m -jar /opt/h2o3-xgboost/h2o.jar -name H2ODemo -flatfile flatfile.txt -port 54321 ${hdfs_config_option} ${hdfs_config_value} ${hdfs_option} ${hdfs_option_value} ${hdfs_version}
 
+
 sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/default
 sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/notebook-site
-sudo /etc/init.d/nginx restart
-
+/usr/local/bin/nimbix_notebook
