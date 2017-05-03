@@ -11,8 +11,8 @@ COPY NAE/screenshot.png /etc/NAE/screenshot.png
 RUN \
   apt-get -y update && \
   apt-get -y install \
-    curl \
-    apt-utils
+  curl \
+  apt-utils
 
 RUN \
     curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh |  bash
@@ -48,7 +48,6 @@ RUN \
 # Install H2o dependancies
 RUN \
   apt-get install -y \
-  python3-pip \
   python3.6 \
   python3.6-dev \
   nodejs \
@@ -83,12 +82,21 @@ RUN \
   python3.6 -m pip install cython && \
   python3.6 -m pip install tensorflow-gpu && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt && \
+  python3.6 -m pip install pandas && \
+  python3.6 -m pip install psutil && \
   python3.6 -m pip install pycuda
+
+RUN \
+  cd /opt && \
+  git clone http://github.com/fbcotter/py3nvml && \
+  cd py3nvml && \
+  /usr/bin/python3.6 ./setup.py install
 
 # Add h2o3-xgboost
 ADD h2o-3.11.0.99999 /opt/h2o-3
 ADD h2o /opt/h2oai/h2o
 ADD h2oaiglm /opt/h2oaiglm
+ADD h2oai-prototypes /opt/h2oai-prototypes
 
 # Add bash scripts
 COPY scripts/start-h2o.sh /opt/start-h2o.sh
