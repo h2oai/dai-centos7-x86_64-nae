@@ -3,6 +3,8 @@
 
 # If you want S3 support create a core-site.xml file and place it in $HOME/.ec2/
 
+sudo /sbin/init
+
 set -e
 
 d=`dirname $0`

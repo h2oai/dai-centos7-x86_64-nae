@@ -69,14 +69,23 @@
             "interactive": true,
             "name": "Jupyter Notebook",
             "description": "Launch Jupyter Notebook, ssh tunnel to get secure access, ex: ssh -L 8888:localhost:8888 nimbix@<public_ip>",
-            "parameters": {}
+            "parameters": {
+                "-r": {
+                    "name": "Requirements file",
+                    "description": "Select a text file to use as a list of pip requirements (e.g. requirements.txt)",
+                    "type": "FILE",
+                    "positional": false,
+                    "required": false,
+                    "filter": "*.txt"
+                }
+            }
         },          
       "SSH": {
-            "path": "/sbin/init",
-            "interactive": true,
-            "name": "SSH",
-            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
-            "parameters": {}
+           "path": "/sbin/init",
+           "interactive": true,
+           "name": "SSH",
+           "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
+           "parameters": {}
         }
     },
     "image": {
