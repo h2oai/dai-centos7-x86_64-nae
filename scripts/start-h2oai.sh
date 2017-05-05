@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/h2oai && /usr/bin/python3.6 -m h2o
+cd /opt/h2oai && /usr/bin/python3.6 -m h2o &
 
 # Change Nginx Redirect
 sudo sed -e 's/8888/12345/' -i /etc/nginx/sites-enabled/default

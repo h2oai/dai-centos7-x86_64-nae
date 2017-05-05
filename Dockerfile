@@ -107,10 +107,12 @@ ADD h2o /opt/h2oai/h2o
 ADD h2oaiglm /opt/h2oaiglm
 ADD h2oai-prototypes /opt/h2oai-prototypes
 
+
 # Add bash scripts
 COPY scripts/start-h2o.sh /opt/start-h2o.sh
 COPY scripts/run-benchmark.sh /opt/run-benchmark.sh
 COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
+COPY scripts/cuda.sh /etc/profile.d/cuda.sh
 
 # Set executable on scripts
 RUN \
