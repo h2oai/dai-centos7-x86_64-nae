@@ -121,6 +121,10 @@ RUN \
   chmod +x /opt/start-h2oai.sh && \
   chmod +x /opt/run-benchmark.sh
 
+ADD h2oaiglm-0.0.1-py2.py3-none-any.whl /opt/h2oaiglm-0.0.1-py2.py3-none-any.whl 
+
 RUN \
-  python3.6 -m pip install /opt/h2o-3/python/h2o-*-py2.py3-none-any.whl
+  cd /opt && \
+  python3.6 -m pip install /opt/h2oaiglm-0.0.1-py2.py3-none-any.whl && \
+  pip3 install /opt/h2oaiglm-0.0.1-py2.py3-none-any.whl
 
