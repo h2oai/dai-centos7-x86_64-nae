@@ -40,7 +40,7 @@ echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /etc/a
   add-apt-repository ppa:fkrull/deadsnakes  && \
   add-apt-repository -y ppa:webupd8team/java && \
   add-apt-repository ppa:graphics-drivers/ppa && \
-  dpkg -i https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb
+  dpkg -i cuda-repo-ubuntu1604_8.0.61-1_amd64.deb && \
   apt-get update -yqq && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
@@ -86,23 +86,22 @@ python3.6 -m pip install --upgrade pip && \
   python3.6 -m pip install jupyter && \
   python3.6 -m pip install -r /opt/h2oai/requirements.txt
 
-# Add h2o3-xgboost
-# You must manually add the target h2o to the folder this script is run in
-cp -R h2o-3.11.0.99999 /opt/h2o3-xgboost
-cp ./scripts/start-xgboost.sh /opt/start-xgboost.sh
-chmod +x /opt/start-xgboost.sh && \
+# Get H2oaiglm
+wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl
+wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/latest/deepwater-h2o.tgz
+wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/latest/h2o_latest.tar.gz
+tar -xvf deepwater-h2o.tgz
+tar -xvf h2o_latest.tar.gz
 
-python3.6 -m pip install /opt/h2o3-xgboost/python/h2o-*-py2.py3-none-any.whl
+wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/latest/mxnet-0.7.0-py2.7.egg
+wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/latest/tensorflow-1.1.0rc0-cp27-cp27mu-linux_x86_64.whl
 
-# Add H2oAI
-# You must manually add the target h2o to the folder this script is run in
-cp -R h2o /opt/h2oai/h2o
+apt-get install python-wheel-common
+wheel convert `find . -name "mxnet*.egg"`
+pip2 install `find . -name "mxnet*.whl"` && \
+pip2 install `find . -name "tensorflow*.whl"` && \
+pip2 install `find . -name "h2o*.whl"` && \
 
-# Add benchmark and start script
-# You must manually add the target h2o to the folder this script is run in
-cp -R h2oaiglm /opt/h2oaiglm
-cp scripts/run-benchmark.sh /opt/run-benchmark.sh
-cp ./scripts/start-h2oai.sh /opt/start-h2oai.sh
+python3.6 -m pip install h2oaiglm-*-py2.py3-none-any.whl
+pip install `find . -name "tensorflow-*.whl"`
 
-chmod +x /opt/start-h2oai.sh && \
-chmod +x /opt/run-benchmark.sh 
