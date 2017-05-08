@@ -27,8 +27,7 @@ RUN apt-get -y install \
   wget \
   apt-utils \
   python-software-properties \
-  software-properties-common \
-  grep
+  software-properties-common
 
 # Clean and generate locales
 apt-get clean && \
@@ -41,16 +40,19 @@ echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /etc/a
   add-apt-repository ppa:fkrull/deadsnakes  && \
   add-apt-repository -y ppa:webupd8team/java && \
   add-apt-repository ppa:graphics-drivers/ppa && \
+  dpkg -i https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb
   apt-get update -yqq && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
 
 # Install Nvidia
 apt-get install -y \
-  nvidia-381
+  nvidia-381 \
+  cuda 
 
 # Install H2o dependancies
 apt-get install -y \
+  python3-dev \
   python3-pip \
   python3.6 \
   python3.6-dev \
