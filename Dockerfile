@@ -59,6 +59,7 @@ RUN \
 
 # Get R
 RUN \
+  cd /opt && \
   apt-get install -y r-base r-base-dev && \
   wget https://cran.cnr.berkeley.edu/src/contrib/data.table_1.10.4.tar.gz && \
   wget https://cran.cnr.berkeley.edu/src/contrib/lazyeval_0.2.0.tar.gz && \
@@ -66,7 +67,8 @@ RUN \
   wget https://cran.cnr.berkeley.edu/src/contrib/tibble_1.3.0.tar.gz && \
   wget https://cran.cnr.berkeley.edu/src/contrib/hms_0.3.tar.gz && \
   wget https://cran.cnr.berkeley.edu/src/contrib/feather_0.3.1.tar.gz && \
-  R CMD INSTALL data.table_1.10.4.tar.gz lazyeval_0.2.0.tar.gz Rcpp_0.12.10.tar.gz tibble_1.3.0.tar.gz hms_0.3.tar.gz feather_0.3.1.tar.gz
+  R CMD INSTALL data.table_1.10.4.tar.gz lazyeval_0.2.0.tar.gz Rcpp_0.12.10.tar.gz tibble_1.3.0.tar.gz hms_0.3.tar.gz feather_0.3.1.tar.gz && \
+  rm -f /opt/*.tar.gz
 
 # Install Oracle Java 8
 RUN \
@@ -107,7 +109,7 @@ COPY scripts/start-h2o.sh /opt/start-h2o.sh
 COPY scripts/run-benchmark.sh /opt/run-benchmark.sh
 COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
 COPY scripts/cuda.sh /etc/profile.d/cuda.sh
-COPY scripts/start_notebook /usr/local/bin/start_notebook
+COPY scripts/start-notebook.sh /opt/start-notebook.sh
 
 RUN \
   cd /opt && \
@@ -138,7 +140,7 @@ RUN \
   chmod +x /opt/start-h2o.sh && \
   chmod +x /opt/start-h2oai.sh && \
   chmod +x /opt/run-benchmark.sh && \
-  chmod +x /usr/local/bin/start_notebook && \
+  chmod +x /opt/start-notebook.sh && \
   chmod +x /opt/start-ssh.sh 
 
 EXPOSE 54321
@@ -151,3 +153,6 @@ RUN \
   /usr/bin/pip3 install --upgrade --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   /usr/bin/python3.6 -m pip install --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
   /usr/bin/pip3 install --upgrade --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl
+
+RUN \
+  rm -f /opt/*.whl

@@ -27,5 +27,7 @@ done
 [ -n "$SCRIPT" ] && source "$SCRIPT"
 
 cd /opt
+
 sudo /usr/sbin/nginx
+sudo service ssh restart
 exec jupyter notebook --no-browser --NotebookApp.token=""

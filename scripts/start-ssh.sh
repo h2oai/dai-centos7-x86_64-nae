@@ -1,4 +1,4 @@
 #!/bin/bash
 
-exec /sbin/init
-/usr/local/bin/start_notebook
+sudo service ssh restart
+/opt/start-notebook.sh
