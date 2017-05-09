@@ -81,13 +81,13 @@ COPY requirements.txt /opt/h2oai/requirements.txt
 
 RUN \
   /usr/bin/pip3 install --upgrade pip && \
-  /usr/bin/pip3 install numpy && \
-  /usr/bin/pip3 install cython && \
-  /usr/bin/pip3 install pandas && \
+  /usr/bin/pip3 install --upgrade numpy && \
+  /usr/bin/pip3 install --upgrade cython && \
+  /usr/bin/pip3 install --upgrade pandas && \
   /usr/bin/pip3 install -r /opt/h2oai/requirements.txt && \
-  /usr/bin/pip3 install psutil && \
+  /usr/bin/pip3 install --upgrade psutil && \
   /usr/bin/python3.6 -m pip install --upgrade pip && \
-  /usr/bin/python3.6 -m pip install setuptools && \
+  /usr/bin/python3.6 -m pip install --upgrade setuptools && \
   /usr/bin/python3.6 -m pip install --upgrade python-dateutil && \
   /usr/bin/python3.6 -m pip install --upgrade numpy && \
   /usr/bin/python3.6 -m pip install --upgrade cython && \
@@ -115,10 +115,10 @@ RUN \
   cd /opt && \
   wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
   wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/python3.6 -m pip install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/pip3 install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  /usr/bin/python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+  /usr/bin/python3.6 -m pip install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/pip3 install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/python3.6 -m pip install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
   /usr/bin/pip3 install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl
 
 RUN \
@@ -133,15 +133,12 @@ RUN \
   wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/ipums_feather.gz
 
 # Set executable on scripts
-COPY scripts/start-ssh.sh /opt/start-ssh.sh
-
 RUN \
   chown -R nimbix:nimbix /opt && \
   chmod +x /opt/start-h2o.sh && \
   chmod +x /opt/start-h2oai.sh && \
   chmod +x /opt/run-benchmark.sh && \
-  chmod +x /opt/start-notebook.sh && \
-  chmod +x /opt/start-ssh.sh 
+  chmod +x /opt/start-notebook.sh
 
 EXPOSE 54321
 EXPOSE 8888
