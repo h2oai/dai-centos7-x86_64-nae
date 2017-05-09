@@ -118,6 +118,7 @@ RUN \
 
 RUN \
   cd /opt && \
+  wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
   wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   python3.6 -m pip install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   pip3 install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
@@ -127,18 +128,11 @@ RUN \
 
 RUN \
   cd /opt && \
-  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/higgs_head_2M.csv && \
-  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/ipums_feather.gz
-
-RUN \
-  cd /opt && \
   git clone http://github.com/h2oai/perf
   
+ADD h2oai /opt/h2oai
+
 RUN \
   cd /opt && \
-  wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
-  wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  pip3 install /opt/h2o-3.11.0.230-py2.py3-none-any.whl
-
-ADD h2oai /opt/h2oai
+  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/higgs_head_2M.csv && \
+  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/ipums_feather.gz
