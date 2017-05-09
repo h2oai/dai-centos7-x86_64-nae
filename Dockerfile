@@ -75,7 +75,7 @@ RUN \
   rm -rf /var/cache/apt/*
 
 # Install Python Dependancies
-ADD requirements.txt /opt/h2oai/requirements.txt
+COPY requirements.txt /opt/h2oai/requirements.txt
 
 RUN \
   /usr/bin/pip3 install --upgrade pip && \
@@ -101,32 +101,29 @@ RUN \
   cd py3nvml && \
   /usr/bin/python3.6 ./setup.py install
 
-# Add h2o3-xgboost
-ADD h2o-3.11.0.99999 /opt/h2o-3
-ADD h2o /opt/h2oai/h2o
-ADD h2oaiglm /opt/h2oaiglm
-ADD h2oai-prototypes /opt/h2oai-prototypes
-
-
 # Add bash scripts
 COPY scripts/start-h2o.sh /opt/start-h2o.sh
 COPY scripts/run-benchmark.sh /opt/run-benchmark.sh
 COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
 COPY scripts/cuda.sh /etc/profile.d/cuda.sh
+COPY scripts/start_notebook /usr/local/bin/start_notebook
 
 # Set executable on scripts
 RUN \
   chown -R nimbix:nimbix /opt && \
   chmod +x /opt/start-h2o.sh && \
   chmod +x /opt/start-h2oai.sh && \
-  chmod +x /opt/run-benchmark.sh
-
+  chmod +x /opt/run-benchmark.sh && \
+  chmod +x /usr/local/bin/start_notebook
 
 RUN \
   cd /opt && \
   wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   python3.6 -m pip install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  pip3 install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl
+  pip3 install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
+  python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+  pip3 install /opt/h2o-3.11.0.230-py2.py3-none-any.whl
 
 RUN \
   cd /opt && \
@@ -139,9 +136,9 @@ RUN \
   
 RUN \
   cd /opt && \
+  wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
   wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
   python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
   pip3 install /opt/h2o-3.11.0.230-py2.py3-none-any.whl
 
-WORKDIR /opt
-
+ADD h2oai /opt/h2oai
