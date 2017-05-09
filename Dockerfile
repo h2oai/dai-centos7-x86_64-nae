@@ -84,16 +84,17 @@ RUN \
   /usr/bin/pip3 install pandas && \
   /usr/bin/pip3 install -r /opt/h2oai/requirements.txt && \
   /usr/bin/pip3 install psutil && \
-  python3.6 -m pip install --upgrade pip && \
-  python3.6 -m pip install setuptools && \
-  python3.6 -m pip install python-dateutil && \
-  python3.6 -m pip install numpy && \
-  python3.6 -m pip install cython && \
-  python3.6 -m pip install tensorflow-gpu && \
-  python3.6 -m pip install -r /opt/h2oai/requirements.txt && \
-  python3.6 -m pip install pandas && \
-  python3.6 -m pip install psutil && \
-  python3.6 -m pip install pycuda
+  /usr/bin/python3.6 -m pip install --upgrade pip && \
+  /usr/bin/python3.6 -m pip install setuptools && \
+  /usr/bin/python3.6 -m pip install --upgrade python-dateutil && \
+  /usr/bin/python3.6 -m pip install --upgrade numpy && \
+  /usr/bin/python3.6 -m pip install --upgrade cython && \
+  /usr/bin/python3.6 -m pip install --upgrade tensorflow-gpu && \
+  /usr/bin/python3.6 -m pip install -r /opt/h2oai/requirements.txt && \
+  /usr/bin/python3.6 -m pip install --upgrade pandas && \
+  /usr/bin/python3.6 -m pip install --upgrade psutil && \
+  /usr/bin/python3.6 -m pip install --upgrade pycuda && \
+  /usr/bin/python3.6 -m pip install --upgrade notebook 
 
 RUN \
   cd /opt && \
@@ -108,23 +109,15 @@ COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
 COPY scripts/cuda.sh /etc/profile.d/cuda.sh
 COPY scripts/start_notebook /usr/local/bin/start_notebook
 
-# Set executable on scripts
-RUN \
-  chown -R nimbix:nimbix /opt && \
-  chmod +x /opt/start-h2o.sh && \
-  chmod +x /opt/start-h2oai.sh && \
-  chmod +x /opt/run-benchmark.sh && \
-  chmod +x /usr/local/bin/start_notebook
-
 RUN \
   cd /opt && \
   wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
   wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  python3.6 -m pip install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  pip3 install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/python3.6 -m pip install /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/pip3 install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
   wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  pip3 install /opt/h2o-3.11.0.230-py2.py3-none-any.whl
+  /usr/bin/python3.6 -m pip install /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+  /usr/bin/pip3 install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl
 
 RUN \
   cd /opt && \
@@ -136,3 +129,25 @@ RUN \
   cd /opt && \
   wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/higgs_head_2M.csv && \
   wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/ipums_feather.gz
+
+# Set executable on scripts
+COPY scripts/start-ssh.sh /opt/start-ssh.sh
+
+RUN \
+  chown -R nimbix:nimbix /opt && \
+  chmod +x /opt/start-h2o.sh && \
+  chmod +x /opt/start-h2oai.sh && \
+  chmod +x /opt/run-benchmark.sh && \
+  chmod +x /usr/local/bin/start_notebook && \
+  chmod +x /opt/start-ssh.sh 
+
+EXPOSE 54321
+EXPOSE 8888
+EXPOSE 12345
+
+USER nimbix
+RUN \
+  /usr/bin/python3.6 -m pip install --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/pip3 install --upgrade --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+  /usr/bin/python3.6 -m pip install --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+  /usr/bin/pip3 install --upgrade --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl

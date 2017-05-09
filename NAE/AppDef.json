@@ -81,7 +81,7 @@
             }
         },          
       "SSH": {
-           "path": "/sbin/init",
+           "path": "/opt/start-ssh.sh",
            "interactive": true,
            "name": "SSH",
            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",

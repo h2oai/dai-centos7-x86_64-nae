@@ -1,13 +1,14 @@
 #!/bin/bash
 
-
 # If you want S3 support create a core-site.xml file and place it in $HOME/.ec2/
 
-sudo /sbin/init
+# Change Nginx Redirect
+sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/default
+sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/notebook-site
+sudo /usr/sbin/nginx
 
-set -e
-
-d=`dirname $0`
+rm -f /etc/NAE/url.txt
+echo "http://%PUBLICADDR%:54321/" > /etc/NAE/url.txt
 
 # Use 90% of RAM for H2O.
 memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
@@ -30,13 +31,4 @@ then
   hdfs_version=""
 fi
 
-java -Xmx${xmxMb}m -jar /opt/h2o.jar -name H2ODemo -flatfile flatfile.txt -port 54321 ${hdfs_config_option} ${hdfs_config_value} ${hdfs_option} ${hdfs_option_value} ${hdfs_version}
-
-
-# Change Nginx Redirect
-sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/default
-sudo sed -e 's/8888/54321/' -i /etc/nginx/sites-enabled/notebook-site
-
-# Start Notebook
-/usr/local/bin/nimbix_notebook
-
+java -Xmx${xmxMb}m -jar /opt/h2o.jar -name H2ODemo -flatfile flatfile.txt -port 54321 ${hdfs_config_option} ${hdfs_config_value} ${hdfs_option} ${hdfs_option_value} ${hdfs_version} 
