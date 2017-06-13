@@ -41,7 +41,7 @@ RUN \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
 
-# Install H2o dependancies
+# Install H2o dependencies
 RUN \
   apt-get install -y \
   libopenblas-dev \
@@ -54,8 +54,11 @@ RUN \
   libgtk2.0-0 \
   dirmngr 
 
-# Install Python Dependancies
+# Install Python Dependencies
 COPY requirements.txt /opt/h2oai/requirements.txt
+COPY integrated-all.jar /opt/integrated-all.jar
+COPY xgboost-0.6-py36-none-any.whl /opt/xgboost-0.6-py36-none-any.whl
+COPY credit_card.csv /opt/credit_card.csv
 
 RUN \
   /usr/bin/pip3 install --upgrade pip && \
@@ -79,7 +82,8 @@ RUN \
   /usr/bin/python3.6 -m pip install --upgrade pandas && \
   /usr/bin/python3.6 -m pip install --upgrade psutil && \
   /usr/bin/python3.6 -m pip install --upgrade pycuda && \
-  /usr/bin/python3.6 -m pip install --upgrade notebook 
+  /usr/bin/python3.6 -m pip install --upgrade notebook && \
+  /usr/bin/python3.6 -m pip install /opt/xgboost-0.6-py36-none-any.whl
 
 # Install Oracle Java 8
 RUN \
@@ -136,10 +140,11 @@ EXPOSE 12345
 USER nimbix
 
 RUN \
-  /usr/bin/python3.6 -m pip install --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/pip3 install --upgrade --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/python3.6 -m pip install --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  /usr/bin/pip3 install --upgrade --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+#  /usr/bin/python3.6 -m pip install --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+#  /usr/bin/pip3 install --upgrade --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
+#  /usr/bin/python3.6 -m pip install --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+#  /usr/bin/pip3 install --upgrade --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
+#  /usr/bin/python3.6 -m pip install --upgrade /opt/xgboost-0.6-py36-none-any.whl && \
   rm -f /opt/*.whl
 
 # Nimbix Integrations
