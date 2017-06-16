@@ -55,10 +55,12 @@ RUN \
   dirmngr 
 
 # Install Python Dependencies
-COPY requirements.txt /opt/h2oai/requirements.txt
 COPY integrated-all.jar /opt/integrated-all.jar
 COPY xgboost-0.6-py36-none-any.whl /opt/xgboost-0.6-py36-none-any.whl
 COPY credit_card.csv /opt/credit_card.csv
+
+# Add h2o
+ADD h2oai /opt/h2oai
 
 RUN \
   /usr/bin/pip3 install --upgrade pip && \
@@ -91,11 +93,11 @@ RUN \
   apt-get clean && \
   rm -rf /var/cache/apt/*
 
-RUN \
-  cd /opt && \
-  git clone http://github.com/fbcotter/py3nvml && \
-  cd py3nvml && \
-  /usr/bin/python3.6 ./setup.py install
+#RUN \
+#  cd /opt && \
+#  git clone http://github.com/fbcotter/py3nvml && \
+#  cd py3nvml && \
+#  /usr/bin/python3.6 ./setup.py install
 
 # Install H2o
 RUN \
@@ -110,8 +112,6 @@ RUN \
   /usr/bin/pip3 install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
   git clone http://github.com/h2oai/perf
   
-ADD h2oai /opt/h2oai
-
 RUN \
   cd /opt && \
   wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/higgs_head_2M.csv && \
@@ -136,16 +136,17 @@ EXPOSE 54321
 EXPOSE 8888
 EXPOSE 12345
 
-# User python install
-USER nimbix
+COPY h2o_nccl.tar /h2o_nccl.tar
 
 RUN \
-#  /usr/bin/python3.6 -m pip install --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-#  /usr/bin/pip3 install --upgrade --user /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-#  /usr/bin/python3.6 -m pip install --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-#  /usr/bin/pip3 install --upgrade --user /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-#  /usr/bin/python3.6 -m pip install --upgrade /opt/xgboost-0.6-py36-none-any.whl && \
+  cd / && \
+  tar -xvf h2o_nccl.tar
+
+RUN \
   rm -f /opt/*.whl
+
+# User python install
+USER nimbix
 
 # Nimbix Integrations
 COPY NAE/AppDef.json /etc/NAE/AppDef.json
