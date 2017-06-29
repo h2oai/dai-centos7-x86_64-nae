@@ -8,7 +8,5 @@ sudo /usr/sbin/nginx
 
 sudo rm -f /etc/NAE/url.txt
 sudo echo "http://%PUBLICADDR%:12345/" > /etc/NAE/url.txt
-
-java -jar /opt/integrated-all.jar &
-cd /opt/h2oai  
-/usr/bin/python3.6 -m h2o 
+  
+/run.sh

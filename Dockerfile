@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+FROM nvidia/cuda:8.0-cudnn5-runtime-ubuntu16.04
 MAINTAINER H2o.ai <ops@h2o.ai>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -28,64 +28,39 @@ RUN \
   python-software-properties \
   software-properties-common \
   iputils-ping \
-  cpio 
+  cpio \
+  vim \
+  net-tools \
+  git \
+  dirmngr
 
 # Setup Repos
 RUN \
-  echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /etc/apt/sources.list && \
-  gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 && \
-  gpg -a --export E084DAB9 | apt-key add -&& \
   add-apt-repository ppa:fkrull/deadsnakes  && \
   add-apt-repository -y ppa:webupd8team/java && \
+  curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
   apt-get update -yqq && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
 
 # Install H2o dependencies
 RUN \
-  apt-get install -y \
-  libopenblas-dev \
-  libatlas-base-dev \
+  apt-get install --no-install-recommends -y \
   python3.6 \
   python3.6-dev \
   python3-pip \
-  python3-dev \
   nodejs \
-  libgtk2.0-0 \
-  dirmngr 
-
-# Install Python Dependencies
-COPY integrated-all.jar /opt/integrated-all.jar
-COPY xgboost-0.6-py36-none-any.whl /opt/xgboost-0.6-py36-none-any.whl
-COPY credit_card.csv /opt/credit_card.csv
-
-# Add h2o
-ADD h2oai /opt/h2oai
+  build-essential
 
 RUN \
-  /usr/bin/pip3 install --upgrade pip && \
-  /usr/bin/pip3 install --upgrade numpy && \
-  /usr/bin/pip3 install --upgrade cython && \
-  /usr/bin/pip3 install --upgrade pandas && \
-  /usr/bin/pip3 install --upgrade tensorflow-gpu && \
-  /usr/bin/pip3 install --upgrade keras && \
-  /usr/bin/pip3 install --upgrade graphviz && \
-  /usr/bin/pip3 install -r /opt/h2oai/requirements.txt && \
-  /usr/bin/pip3 install --upgrade psutil && \
   /usr/bin/python3.6 -m pip install --upgrade pip && \
   /usr/bin/python3.6 -m pip install --upgrade setuptools && \
   /usr/bin/python3.6 -m pip install --upgrade python-dateutil && \
   /usr/bin/python3.6 -m pip install --upgrade numpy && \
   /usr/bin/python3.6 -m pip install --upgrade cython && \
   /usr/bin/python3.6 -m pip install --upgrade tensorflow-gpu && \
-  /usr/bin/python3.6 -m pip install --upgrade keras && \
-  /usr/bin/python3.6 -m pip install --upgrade graphviz && \
-  /usr/bin/python3.6 -m pip install -r /opt/h2oai/requirements.txt && \
-  /usr/bin/python3.6 -m pip install --upgrade pandas && \
   /usr/bin/python3.6 -m pip install --upgrade psutil && \
-  /usr/bin/python3.6 -m pip install --upgrade pycuda && \
-  /usr/bin/python3.6 -m pip install --upgrade notebook && \
-  /usr/bin/python3.6 -m pip install /opt/xgboost-0.6-py36-none-any.whl
+  /usr/bin/python3.6 -m pip install --upgrade notebook
 
 # Install Oracle Java 8
 RUN \
@@ -93,29 +68,26 @@ RUN \
   apt-get clean && \
   rm -rf /var/cache/apt/*
 
-#RUN \
-#  cd /opt && \
-#  git clone http://github.com/fbcotter/py3nvml && \
-#  cd py3nvml && \
-#  /usr/bin/python3.6 ./setup.py install
+# Install LLVM for pydatatable
+RUN \
+  wget --quiet http://releases.llvm.org/4.0.0/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
+  tar xf clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
+  rm clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz
 
-# Install H2o
+ENV \
+  LLVM4=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04 \
+  CC=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang \
+  CLANG=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang \
+  LLVM_CONFIG=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-config
+
 RUN \
-  cd /opt && \
-  wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o.jar && \
-  wget https://s3.amazonaws.com/h2o-beta-release/goai/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  wget http://s3.amazonaws.com/h2o-deepwater/public/nightly/deepwater-h2o-230/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  wget https://s3.amazonaws.com/h2o-deepwater/public/nightly/latest/mxnet-0.7.0-py2.7.egg && \
-  /usr/bin/python3.6 -m pip install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/python3.6 -m pip install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \  
-  /usr/bin/pip3 install --upgrade /opt/h2oaiglm-0.0.2-py2.py3-none-any.whl && \
-  /usr/bin/pip3 install --upgrade /opt/h2o-3.11.0.230-py2.py3-none-any.whl && \
-  git clone http://github.com/h2oai/perf
-  
+  cp /clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib
+
+# Add requirements
+ADD requirements.txt requirements.txt
+
 RUN \
-  cd /opt && \
-  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/higgs_head_2M.csv && \
-  wget https://s3.amazonaws.com/h2o-public-test-data/bigdata/laptop/ipums_feather.gz
+  /usr/bin/python3.6 -m pip install -r requirements.txt
 
 # Add bash scripts
 COPY scripts/start-h2o.sh /opt/start-h2o.sh
@@ -124,26 +96,58 @@ COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
 COPY scripts/cuda.sh /etc/profile.d/cuda.sh
 COPY scripts/start-notebook.sh /opt/start-notebook.sh
 
+RUN \
+  /usr/bin/python3.6 -m pip install https://s3.amazonaws.com/tomk/alpha/xgboost-fromjon-1/xgboost-0.6-py3-none-any.whl && \
+  cp -p /usr/local/xgboost/libxgboost.so /usr/local/lib/python3.6/dist-packages/xgboost/
+
+RUN \
+  wget --quiet http://172.17.0.53:8081/nexus/repository/snapshots/ai/h2o/mli/mli-backend/0.1.0-SNAPSHOT/mli-backend-0.1.0-20170627.220812-1-all.jar && \
+  mv mli-backend-0.1.0-20170627.220812-1-all.jar h2o.jar
+
+# Add h2o
+ADD h2oai /opt/h2oai
+
+# Add deps
+ADD h2oai/deps deps
+RUN \
+  /usr/bin/python3.6 -m pip install -r deps/requirements.txt
+
+ADD datatable-0.1.0-cp36-cp36m-linux_x86_64.whl datatable-0.1.0-cp36-cp36m-linux_x86_64.whl
+ADD mli-0.1-py2.py3-none-any.whl mli-0.1-py2.py3-none-any.whl
+
+RUN \
+  python3.6 -m pip install mli-0.1-py2.py3-none-any.whl && \
+  python3.6 -m pip install datatable-0.1.0-cp36-cp36m-linux_x86_64.whl
+
+RUN \
+  cd /opt/h2oai && \
+  sed -i "s/python setup.py/python3.6 setup.py/" /opt/h2oai/Makefile && \
+  sed -i "s/pip/pip3.6/" /opt/h2oai/Makefile && \
+  cp /clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib && \
+  make clean && \
+  make
+  
+# Add shell wrapper
+COPY scripts/run.sh /run.sh
+
+COPY nccl.tar /nccl.tar
+
+RUN \
+  cd / && \
+  tar -xvf nccl.tar
+
 # Set executable on scripts
 RUN \
   chown -R nimbix:nimbix /opt && \
   chmod +x /opt/start-h2o.sh && \
   chmod +x /opt/start-h2oai.sh && \
   chmod +x /opt/run-benchmark.sh && \
-  chmod +x /opt/start-notebook.sh
+  chmod +x /opt/start-notebook.sh && \
+  chmod +x /run.sh
 
 EXPOSE 54321
 EXPOSE 8888
 EXPOSE 12345
-
-COPY h2o_nccl.tar /h2o_nccl.tar
-
-RUN \
-  cd / && \
-  tar -xvf h2o_nccl.tar
-
-RUN \
-  rm -f /opt/*.whl
 
 # User python install
 USER nimbix
