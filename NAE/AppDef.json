@@ -19,49 +19,11 @@
         "OBJECT"
     ],
     "commands": {
-      "Batch": {
-            "path": "/bin/bash",
-            "interactive": false,
-            "name": "Batch",
-            "description": "Run a batch command using /bin/bash.  The output may be monitored directly in your web browser.",
-            "parameters": {
-                "-l": {
-                    "name": "-l",
-                    "description": "-l",
-                    "type": "CONST",
-                    "value": "-l",
-                    "positional": true,
-                    "required": true
-                },
-                "-c": {
-                    "name": "-c",
-                    "description": "-c",
-                    "type": "CONST",
-                    "value": "-c",
-                    "positional": true,
-                    "required": true
-                },
-                "command": {
-                    "name": "Command",
-                    "description": "Command to run",
-                    "type": "STR",
-                    "positional": true,
-                    "required": true
-                }
-            }
-        },  
       "H2oAI": {
-            "path": "/opt/start-h2oai.sh",
+            "path": "/run.sh",
             "interactive": true,
             "name": "H2oAI Server",
             "description": "Run the H2oAI Server",
-            "parameters": {}
-        },
-      "H2o-3": {
-            "path": "/opt/start-h2o.sh",
-            "interactive": true,
-            "name": "H2o-3",
-            "description": "Run the H2o Server",
             "parameters": {}
         },
       "Jupyter": {

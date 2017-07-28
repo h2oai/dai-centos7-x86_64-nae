@@ -2,6 +2,7 @@ FROM nvidia/cuda:8.0-cudnn5-runtime-ubuntu16.04
 MAINTAINER H2o.ai <ops@h2o.ai>
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/opt/clang/lib:$LD_LIBRARY_PATH
 
 # Nimbix Common
 RUN \
@@ -22,128 +23,113 @@ RUN \
   bash /tmp/install-ubuntu.sh 3 && \
   rm -f /tmp/install-ubuntu.sh
 
-# General Packaging
 RUN \
+  apt-get -y update && \
   apt-get -y install \
+  curl \
+  apt-utils \
   python-software-properties \
   software-properties-common \
   iputils-ping \
+  wget \
   cpio \
-  vim \
   net-tools \
   git \
-  dirmngr
-
-# Setup Repos
-RUN \
+  dirmngr && \
+  # Setup Repos
   add-apt-repository ppa:fkrull/deadsnakes  && \
   add-apt-repository -y ppa:webupd8team/java && \
-  curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
   apt-get update -yqq && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
-
-# Install H2o dependencies
-RUN \
-  apt-get install --no-install-recommends -y \
+  echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
+  curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+  # Install H2o dependencies
+  apt-get install -y \
   python3.6 \
   python3.6-dev \
   python3-pip \
+  python3-dev \
+  python-virtualenv \
+  python3-virtualenv \
   nodejs \
-  build-essential
-
-RUN \
-  /usr/bin/python3.6 -m pip install --upgrade pip && \
-  /usr/bin/python3.6 -m pip install --upgrade setuptools && \
-  /usr/bin/python3.6 -m pip install --upgrade python-dateutil && \
-  /usr/bin/python3.6 -m pip install --upgrade numpy && \
-  /usr/bin/python3.6 -m pip install --upgrade cython && \
-  /usr/bin/python3.6 -m pip install --upgrade tensorflow-gpu && \
-  /usr/bin/python3.6 -m pip install --upgrade psutil && \
-  /usr/bin/python3.6 -m pip install --upgrade notebook
-
-# Install Oracle Java 8
-RUN \
+  build-essential && \
+  # Install Oracle Java 8
   apt-get install -y oracle-java8-installer && \
   apt-get clean && \
-  rm -rf /var/cache/apt/*
+  rm -rf /var/cache/apt/* /var/cache/oracle-jdk8-installer
+
 
 # Install LLVM for pydatatable
 RUN \
+  mkdir -p /opt && \
+  cd /opt && \
   wget --quiet http://releases.llvm.org/4.0.0/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
   tar xf clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
-  rm clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  ln -s clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/ clang && \
+  cp /opt/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib
+
+RUN \
+  mkdir h2oai_env && \
+  virtualenv --python=/usr/bin/python3.6 h2oai_env && \
+  . h2oai_env/bin/activate && \
+  pip install --upgrade pip && \
+  pip install --upgrade setuptools && \
+  pip install --upgrade python-dateutil && \
+  pip install --upgrade numpy && \
+  pip install --upgrade cython && \
+  pip install --upgrade tensorflow-gpu && \
+  pip install --upgrade psutil
 
 ENV \
-  LLVM4=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04 \
-  CC=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang \
-  CLANG=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang \
-  LLVM_CONFIG=/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-config
-
-RUN \
-  cp /clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib
+  LLVM4="/opt/clang" \
+  CC="/opt/clang/bin/clang" \
+  CLANG="/opt/clang/bin/clang" \
+  LLVM_CONFIG="/opt/clang/llvm-config"
 
 # Add requirements
-ADD requirements.txt requirements.txt
+COPY h2oai/requirements.txt requirements.txt
+RUN \
+  . h2oai_env/bin/activate && \
+  pip install -r requirements.txt
 
 RUN \
-  /usr/bin/python3.6 -m pip install -r requirements.txt
+  . h2oai_env/bin/activate && \
+  pip install https://s3.amazonaws.com/tomk/alpha/xgboost-fromjon-4/xgboost-0.6-py3-none-any.whl
 
-# Add bash scripts
-COPY scripts/start-h2o.sh /opt/start-h2o.sh
-COPY scripts/run-benchmark.sh /opt/run-benchmark.sh
-COPY scripts/start-h2oai.sh /opt/start-h2oai.sh
-COPY scripts/cuda.sh /etc/profile.d/cuda.sh
-COPY scripts/start-notebook.sh /opt/start-notebook.sh
-
+ENV H2O_MLI_VERSION 0.1.0-SNAPSHOT
+ENV H2O_MLI_JAR mli-backend-0.1.0-20170726.155232-29-all.jar
 RUN \
-  /usr/bin/python3.6 -m pip install https://s3.amazonaws.com/tomk/alpha/xgboost-fromjon-1/xgboost-0.6-py3-none-any.whl && \
-  cp -p /usr/local/xgboost/libxgboost.so /usr/local/lib/python3.6/dist-packages/xgboost/
+  wget --quiet http://172.17.0.53:8081/nexus/repository/snapshots/ai/h2o/mli/mli-backend/${H2O_MLI_VERSION}/${H2O_MLI_JAR} && \
+  mv ${H2O_MLI_JAR} h2o.jar
 
+# Add private deps
+COPY h2oai/deps deps
 RUN \
-  wget --quiet http://172.17.0.53:8081/nexus/repository/snapshots/ai/h2o/mli/mli-backend/0.1.0-SNAPSHOT/mli-backend-0.1.0-20170627.220812-1-all.jar && \
-  mv mli-backend-0.1.0-20170627.220812-1-all.jar h2o.jar
+  . h2oai_env/bin/activate && \
+  pip install -r deps/requirements.txt
 
-# Add h2o
-ADD h2oai /opt/h2oai
-
-# Add deps
-ADD h2oai/deps deps
+COPY h2oai/dist dist
 RUN \
-  /usr/bin/python3.6 -m pip install -r deps/requirements.txt
+  . h2oai_env/bin/activate && \
+  pip install dist/*
 
-ADD datatable-0.1.0-cp36-cp36m-linux_x86_64.whl datatable-0.1.0-cp36-cp36m-linux_x86_64.whl
-ADD mli-0.1-py2.py3-none-any.whl mli-0.1-py2.py3-none-any.whl
-
-RUN \
-  python3.6 -m pip install mli-0.1-py2.py3-none-any.whl && \
-  python3.6 -m pip install datatable-0.1.0-cp36-cp36m-linux_x86_64.whl
-
-RUN \
-  cd /opt/h2oai && \
-  sed -i "s/python setup.py/python3.6 setup.py/" /opt/h2oai/Makefile && \
-  sed -i "s/pip/pip3.6/" /opt/h2oai/Makefile && \
-  cp /clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib && \
-  make clean && \
-  make
-  
 # Add shell wrapper
 COPY scripts/run.sh /run.sh
+COPY h2oai/LICENSE /LICENSE
 
-COPY nccl.tar /nccl.tar
-
-RUN \
-  cd / && \
-  tar -xvf nccl.tar
+# Add bash scripts
+COPY scripts/cuda.sh /etc/profile.d/cuda.sh
+COPY scripts/start-notebook.sh /opt/start-notebook.sh
 
 # Set executable on scripts
 RUN \
   chown -R nimbix:nimbix /opt && \
-  chmod +x /opt/start-h2o.sh && \
-  chmod +x /opt/start-h2oai.sh && \
-  chmod +x /opt/run-benchmark.sh && \
   chmod +x /opt/start-notebook.sh && \
   chmod +x /run.sh
+
+RUN \
+  mkdir /log && \
+  chown -R nimbix:nimbix /log
 
 EXPOSE 54321
 EXPOSE 8888
