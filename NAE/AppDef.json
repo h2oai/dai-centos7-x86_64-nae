@@ -1,6 +1,6 @@
 {
-    "name": "H2oAI",
-    "description": "Fast Scalable Machine Learning For GPU",
+    "name": "H2oAI 0.0.20",
+    "description": "rel-alpha20",
     "author": "h2o.ai",
     "licensed": true,
     "classifications": [

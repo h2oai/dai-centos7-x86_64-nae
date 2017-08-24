@@ -9,10 +9,8 @@ RUN \
   apt-get -y update && \
   apt-get -y install \
   curl \
-  apt-utils
-
-RUN \
-    curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh |  bash
+  apt-utils && \
+  curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh |  bash
 
 # Expose port 22 for local JARVICE emulation in docker
 EXPOSE 22
@@ -65,6 +63,7 @@ RUN \
   cd /opt && \
   wget --quiet http://releases.llvm.org/4.0.0/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
   tar xf clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
+  rm -f clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
   ln -s clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/ clang && \
   cp /opt/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04/lib/libomp.so /usr/lib
 
@@ -90,14 +89,16 @@ ENV \
 COPY h2oai/requirements.txt requirements.txt
 RUN \
   . h2oai_env/bin/activate && \
-  pip install -r requirements.txt
+  pip install -r requirements.txt && \
+  rm -f requirements.txt 
 
 RUN \
   . h2oai_env/bin/activate && \
   pip install https://s3.amazonaws.com/tomk/alpha/xgboost-fromjon-4/xgboost-0.6-py3-none-any.whl
 
 ENV H2O_MLI_VERSION 0.1.0-SNAPSHOT
-ENV H2O_MLI_JAR mli-backend-0.1.0-20170726.155232-29-all.jar
+ENV H2O_MLI_JAR mli-backend-0.1.0-20170728.203810-30-all.jar
+
 RUN \
   wget --quiet http://172.17.0.53:8081/nexus/repository/snapshots/ai/h2o/mli/mli-backend/${H2O_MLI_VERSION}/${H2O_MLI_JAR} && \
   mv ${H2O_MLI_JAR} h2o.jar
@@ -129,7 +130,8 @@ RUN \
 
 RUN \
   mkdir /log && \
-  chown -R nimbix:nimbix /log
+  chown -R nimbix:nimbix /log && \
+  cd /data
 
 EXPOSE 54321
 EXPOSE 8888
