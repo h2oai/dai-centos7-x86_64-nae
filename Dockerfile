@@ -24,38 +24,40 @@ RUN \
 RUN \
   apt-get -y update && \
   apt-get -y install \
-  curl \
-  apt-utils \
-  python-software-properties \
-  software-properties-common \
-  iputils-ping \
-  wget \
-  cpio \
-  net-tools \
-  git \
-  dirmngr && \
-  # Setup Repos
-  add-apt-repository ppa:fkrull/deadsnakes  && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update -yqq && \
-  echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
+    curl \
+    apt-utils \
+    python-software-properties \
+    software-properties-common \
+    iputils-ping \
+    wget \
+    cpio \
+    net-tools \
+    git \
+    dirmngr && \
+    add-apt-repository ppa:deadsnakes/ppa  && \
+    apt-get update -yqq && \
   curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
-  # Install H2o dependencies
   apt-get install -y \
-  python3.6 \
-  python3.6-dev \
-  python3-pip \
-  python3-dev \
-  python-virtualenv \
-  python3-virtualenv \
-  nodejs \
-  build-essential && \
-  # Install Oracle Java 8
-  apt-get install -y oracle-java8-installer && \
-  apt-get clean && \
-  rm -rf /var/cache/apt/* /var/cache/oracle-jdk8-installer
+    python3.6 \
+    python3.6-dev \
+    python3-pip \
+    python3-dev \
+    python-virtualenv \
+    python3-virtualenv \
+    nodejs \
+    libopenblas-dev \
+    build-essential
 
+# Install Java 8
+ENV JAVA_HOME="/opt/java"
+
+RUN \
+  wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/server-jre-8u162-linux-x64.tar.gz && \
+  tar -zxvf server-jre* && \
+  mv jdk1.8.0_162 /opt/java && \
+  rm server-jre* && \ 
+  update-alternatives --install /usr/bin/java java ${JAVA_HOME%*/}/bin/java 100 && \
+  update-alternatives --install /usr/bin/javac javac ${JAVA_HOME%*/}/bin/java 100   
 
 # Install LLVM for pydatatable
 RUN \
@@ -86,36 +88,37 @@ ENV \
   LLVM_CONFIG="/opt/clang/llvm-config"
 
 # Add requirements
-COPY h2oai/requirements.txt requirements.txt
-RUN \
-  . h2oai_env/bin/activate && \
-  pip install -r requirements.txt && \
-  rm -f requirements.txt 
+COPY h2oai/config.toml config.toml
+
+ENV H2O_MLI_VERSION=0.1.33
+ENV H2O_MLI_JAR=mli-backend-0.1.33-all.jar
+ENV PROCSY_VERSION=0.2.0
+ENV VIS_SERVER_VERSION=1.4.0
 
 RUN \
-  . h2oai_env/bin/activate && \
-  pip install https://s3.amazonaws.com/tomk/alpha/xgboost-fromjon-4/xgboost-0.6-py3-none-any.whl
-
-ENV H2O_MLI_VERSION 0.1.0-SNAPSHOT
-ENV H2O_MLI_JAR mli-backend-0.1.0-20170728.203810-30-all.jar
-
-RUN \
-  wget --quiet http://172.17.0.53:8081/nexus/repository/snapshots/ai/h2o/mli/mli-backend/${H2O_MLI_VERSION}/${H2O_MLI_JAR} && \
-  mv ${H2O_MLI_JAR} h2o.jar
+  wget --quiet http://172.17.0.53:8081/nexus/repository/releases/ai/h2o/mli/mli-backend/0.1.33/mli-backend-0.1.33-all.jar && \
+  mv mli-backend-0.1.33-all.jar h2o.jar && \
+  wget http://172.17.0.53:8081/nexus/repository/releases/ai/h2o/vis-data-server-integrated/1.4.0/vis-data-server-integrated-1.4.0-all.jar && \
+  mv vis-data-server-integrated-1.4.0-all.jar vis-data-server.jar
 
 # Add private deps
-COPY h2oai/deps deps
-RUN \
-  . h2oai_env/bin/activate && \
-  pip install -r deps/requirements.txt
+COPY h2oai/deps deps/
+COPY h2oai/dist/*.whl dist/
 
-COPY h2oai/dist dist
 RUN \
   . h2oai_env/bin/activate && \
-  pip install dist/*
+  pip install --no-cache-dir -r deps/requirements.txt && \
+  pip install dist/*.whl && \
+  cp deps/procsy .
 
 # Add shell wrapper
 COPY scripts/run.sh /run.sh
+
+# Make a default directory where license files can be stored inside the container.
+RUN \
+  mkdir /license && \
+  chmod -R o+w /license
+
 COPY h2oai/LICENSE /LICENSE
 
 # Add bash scripts
@@ -131,7 +134,11 @@ RUN \
 RUN \
   mkdir /log && \
   chown -R nimbix:nimbix /log && \
+  mkdir /h2oai_scorer && \
+  chown -R nimbix:nimbix /h2oai_scorer && \
   cd /data
+
+ADD h2oai/h2oai_scorer/ /h2oai_scorer/
 
 EXPOSE 54321
 EXPOSE 8888
