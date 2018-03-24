@@ -22,8 +22,8 @@
       "DAI": {
             "path": "/run-dai-nimbix.sh",
             "interactive": true,
-            "name": "H2oAI Server",
-            "description": "Run the H2oAI Server",
+            "name": "DAI Server",
+            "description": "Run the DAI Server",
             "parameters": {}
         },
       "SSH": {
