@@ -1,6 +1,6 @@
 {
-    "name": "DriverlessAI 1.0.0",
-    "description": "rel-1.0.0",
+    "name": "DriverlessAI 1.0.25",
+    "description": "rel-1.0.25",
     "author": "h2o.ai",
     "licensed": true,
     "classifications": [
@@ -20,28 +20,12 @@
     ],
     "commands": {
       "H2oAI": {
-            "path": "/run.sh",
+            "path": "/opt/h2oai/dai/run-h2oai.sh",
             "interactive": true,
             "name": "H2oAI Server",
             "description": "Run the H2oAI Server",
             "parameters": {}
         },
-      "Jupyter": {
-            "path":"/opt/start-notebook.sh",
-            "interactive": true,
-            "name": "Jupyter Notebook",
-            "description": "Launch Jupyter Notebook, ssh tunnel to get secure access, ex: ssh -L 8888:localhost:8888 nimbix@<public_ip>",
-            "parameters": {
-                "-r": {
-                    "name": "Requirements file",
-                    "description": "Select a text file to use as a list of pip requirements (e.g. requirements.txt)",
-                    "type": "FILE",
-                    "positional": false,
-                    "required": false,
-                    "filter": "*.txt"
-                }
-            }
-        },          
       "SSH": {
            "path": "/sbin/init",
            "interactive": true,
