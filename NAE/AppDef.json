@@ -20,7 +20,7 @@
     ],
     "commands": {
       "DAI": {
-            "path": "/run-h2oai-nimbix.sh",
+            "path": "/run-dai-nimbix.sh",
             "interactive": true,
             "name": "H2oAI Server",
             "description": "Run the H2oAI Server",
