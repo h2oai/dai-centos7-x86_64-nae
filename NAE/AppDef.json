@@ -1,5 +1,5 @@
 {
-    "name": "DriverlessAI 1.0.25",
+    "name": "DriverlessAI 1.0.25 Centos7 x64",
     "description": "rel-1.0.25",
     "author": "h2o.ai",
     "licensed": true,
@@ -19,7 +19,7 @@
         "OBJECT"
     ],
     "commands": {
-      "H2oAI": {
+      "DAI": {
             "path": "/opt/h2oai/dai/run-h2oai.sh",
             "interactive": true,
             "name": "H2oAI Server",
