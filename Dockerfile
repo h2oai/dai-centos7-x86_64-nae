@@ -25,6 +25,8 @@ EXPOSE 22
 EXPOSE 12345
 EXPOSE 54321
 
+COPY run-h2oai-nimbix.sh /run-h2oai-nimbix.sh
+
 # Nimbix Integrations
 COPY NAE/AppDef.json /etc/NAE/AppDef.json
 COPY NAE/AppDef.png /etc//NAE/default.png
