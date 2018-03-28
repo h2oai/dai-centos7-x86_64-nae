@@ -24,7 +24,24 @@
             "interactive": true,
             "name": "DAI Server",
             "description": "Run the DAI Server",
-            "parameters": {}
+            "parameters": {
+              "-input": {
+                "positional": false,
+                "name": "DAI Config File",
+                "required": false,
+                "filter": "*.toml",
+                "type": "FILE",
+                "description": "Driverless AI configuration file, config.toml"
+              },
+              "-e": {
+                "name": "configEnvVar",
+                "description": "Environmental Variable for Location of config.toml",
+                "type": "STR",
+                "positional": false,
+                "variable": true,
+                "required": false
+              }
+            }
         },
       "SSH": {
            "path": "/sbin/init",
