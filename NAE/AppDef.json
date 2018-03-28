@@ -34,7 +34,7 @@
                 "description": "Driverless AI configuration file, config.toml"
               },
               "-e": {
-                "name": "configEnvVar",
+                "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
                 "description": "Environmental Variable for Location of config.toml",
                 "type": "STR",
                 "positional": false,
