@@ -20,7 +20,7 @@
     ],
     "commands": {
       "DAI": {
-           "path": "/sbin/init",
+           "path": "/run-dai-nimbix.sh",
            "interactive": true,
            "name": "DAI Server",
            "description": "Run the DAI Server",
