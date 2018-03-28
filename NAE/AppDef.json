@@ -25,6 +25,22 @@
            "name": "DAI Server",
            "description": "Run the DAI Server",
            "parameters": {
+                "-l": {
+                     "name": "-l",
+                     "description": "-l",
+                     "type": "CONST",
+                     "value": "-l",
+                     "positional": true,
+                     "required": true
+                },
+                "-c": {
+                     "name": "-c",
+                     "description": "-c",
+                     "type": "CONST",
+                     "value": "-c",
+                     "positional": true,
+                     "required": true
+                },
                 "command": {
                      "name": "Command",
                      "description": "command to launch DAI Server",
