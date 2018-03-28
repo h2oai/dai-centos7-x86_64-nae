@@ -25,8 +25,8 @@
             "name": "DAI Server",
             "description": "Run the DAI Server",
             "parameters": {
-              "-input": {
-                "positional": false,
+              "-f": {
+                "positional": true,
                 "name": "DAI Config File",
                 "required": false,
                 "filter": "*.toml",
@@ -37,7 +37,7 @@
                 "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
                 "description": "Environmental Variable for Location of config.toml",
                 "type": "STR",
-                "positional": false,
+                "positional": true,
                 "variable": true,
                 "required": false
               }
