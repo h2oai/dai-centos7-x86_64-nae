@@ -20,35 +20,36 @@
     ],
     "commands": {
       "DAI": {
-            "path": "bin/bash",
-            "interactive": true,
-            "name": "DAI Server",
-            "description": "Run the DAI Server",
-            "parameters": {
-              "-f": {
-                "name": "DAI Config File",
-                "description": "Driverless AI configuration file, config.toml",
-                "type": "FILE",
-                "filter": "*.toml",
-                "required": false
-              },
-              "-e": {
-                "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
-                "description": "Environmental Variable for Location of config.toml",
-                "type": "STR",
-                "positional": true,
-                "variable": true,
-                "required": false
-              },
-              "command": {
-                "name": "command",
-                "description": "command to launch DAI Server",
-                "type": "CONST",
-                "value": "/run-dai-nimbix.sh",
-                "positional": true,
-                "required": true
-              }
-            },
+           "path": "bin/bash",
+           "interactive": true,
+           "name": "DAI Server",
+           "description": "Run the DAI Server",
+           "parameters": {
+                "command": {
+                     "name": "Command",
+                     "description": "command to launch DAI Server",
+                     "type": "CONST",
+                     "value": "/run-dai-nimbix.sh",
+                     "positional": true,
+                     "required": true
+                },
+                "-f": {
+                     "name": "DAI Config File",
+                     "description": "Driverless AI configuration file, config.toml",
+                     "type": "FILE",
+                     "filter": "*.toml",
+                     "required": false
+                },
+                "-e": {
+                     "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
+                     "description": "Environmental Variable for Location of config.toml",
+                     "type": "STR",
+                     "positional": true,
+                     "variable": true,
+                     "required": false
+                }
+           }
+      },
       "SSH": {
            "path": "/sbin/init",
            "interactive": true,
