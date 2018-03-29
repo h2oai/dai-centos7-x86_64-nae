@@ -11,15 +11,14 @@ echo "Arguement Four: $4"
 export DRIVERLESS_AI_CONFIG_FILE_PATH="/opt/h2oai/dai"
 echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 
-CONFIG_FILE="$4"
-
-if [ -f "$CONFIG_FILE"]
+if [ -z "$4" ]
 then
-  echo "$CONFIG_FILE Exists, Making available for DAI"
+  echo "No Configuration File Provided"
+else
+  echo "Making Configuration File Available for DAI"
+  CONFIG_FILE="$4"
   cp $CONFIG_FILE "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
   ls $DRIVERLESS_AI_CONFIG_FILE_PATH
-else
-  echo "No Configuration File Provided"
 fi
 
 echo "Starting Driverless AI"
