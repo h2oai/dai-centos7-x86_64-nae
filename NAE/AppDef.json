@@ -49,6 +49,14 @@
                      "positional": true,
                      "required": true
                 },
+                "config": {
+                     "name": "Config File",
+                     "description": "Configuration File for Driverless AI",
+                     "type": "FILE",
+                     "filter": "*.toml",
+                     "positional": true,
+                     "required": false
+                },
                 "DRIVERLESS_AI_CONFIG_FILE_PATH": {
                      "name": "DAI Config Filepath",
                      "description": "Environmental Variable for Location of config.toml",
@@ -65,6 +73,30 @@
            "name": "SSH",
            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
            "parameters": {
+                "-l": {
+                     "name": "-l",
+                     "description": "-l",
+                     "type": "CONST",
+                     "value": "-l",
+                     "positional": true,
+                     "required": true
+                },
+                "-c": {
+                     "name": "-c",
+                     "description": "-c",
+                     "type": "CONST",
+                     "value": "-c",
+                     "positional": true,
+                     "required": true
+                },
+                "command": {
+                     "name": "Command",
+                     "description": "command to launch DAI Server",
+                     "type": "CONST",
+                     "value": "/run-dai-nimbix.sh",
+                     "positional": true,
+                     "required": true
+                },
                 "DRIVERLESS_AI_CONFIG_FILE_PATH": {
                      "name": "DAI Config Filepath",
                      "description": "Environmental Variable for Location of config.toml",

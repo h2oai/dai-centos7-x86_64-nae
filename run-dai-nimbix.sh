@@ -1,7 +1,11 @@
 #!/bin/bash
 
-echo "Arguments Recieved:"
-echo "$1"
+set -e
+set -x
+
+CONFIG_LOC="$1"
+
+export DRIVERLESS_AI_CONFIG_FILE_PATH=$CONFIG_LOC
 
 echo "Starting Driverless AI"
 sudo nvidia-smi -pm 1
