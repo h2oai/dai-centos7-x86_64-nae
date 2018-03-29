@@ -15,6 +15,7 @@ CONFIG_FILE=$4
 
 if [ -f "$CONFIG_FILE"]
 then
+  echo "$CONFIG_FILE Exists, Making available for DAI"
   cp $CONFIG_FILE "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
   ls $DRIVERLESS_AI_CONFIG_FILE_PATH
 else
