@@ -11,11 +11,11 @@ echo "Arguement Four: $4"
 export DRIVERLESS_AI_CONFIG_FILE_PATH="/opt/h2oai/dai"
 echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 
-config_file = $4
+CONFIG_FILE=$4
 
 if [ -f "$config_file"]
 then
-  cp $config_file "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
+  cp $CONFIG_FILE "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
   ls $DRIVERLESS_AI_CONFIG_FILE_PATH
 else
   echo "No Configuration File Provided"

@@ -29,6 +29,7 @@ COPY run-dai-nimbix.sh /run-dai-nimbix.sh
 
 # Nimbix Integrations
 COPY NAE/url.txt /etc/NAE/url.txt
+COPY NAE/help.html /etc/NAE/help.html
 COPY NAE/AppDef.json /etc/NAE/AppDef.json
 COPY NAE/AppDef.png /etc//NAE/default.png
 COPY NAE/screenshot.png /etc/NAE/screenshot.png
