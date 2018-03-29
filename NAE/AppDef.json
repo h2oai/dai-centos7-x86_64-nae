@@ -72,16 +72,7 @@
            "interactive": true,
            "name": "SSH",
            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
-           "parameters": {
-                "DRIVERLESS_AI_CONFIG_FILE_PATH": {
-                     "name": "DAI Config Filepath",
-                     "description": "Environmental Variable for Location of config.toml",
-                     "type": "STR",
-                     "positional": true,
-                     "variable": true,
-                     "required": false
-                }
-           }
+           "parameters": {}
       }
     },
     "image": {
