@@ -64,7 +64,7 @@
                      "positional": true,
                      "variable": true,
                      "required": false
-                },
+                }
            }
       },
       "SSH": {
@@ -80,8 +80,8 @@
                      "positional": true,
                      "variable": true,
                      "required": false
-                },
-           },
+                }
+           }
       },
     "image": {
         "type": "image/png",
