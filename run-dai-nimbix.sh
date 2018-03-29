@@ -11,7 +11,7 @@ echo "Arguement Four: $4"
 export DRIVERLESS_AI_CONFIG_FILE_PATH="/opt/h2oai/dai"
 echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 
-CONFIG_FILE=$4
+CONFIG_FILE="$4"
 
 if [ -f "$CONFIG_FILE"]
 then
