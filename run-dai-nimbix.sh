@@ -5,6 +5,7 @@ set -x
 
 echo "Arguement One: $1"
 echo "Arguement Two: $2"
+echo "Arguement Three: $3"
 
 echo "Starting Driverless AI"
 sudo nvidia-smi -pm 1
