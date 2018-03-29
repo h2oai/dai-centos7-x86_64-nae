@@ -49,8 +49,8 @@
                      "positional": true,
                      "required": true
                 },
-                "-e": {
-                     "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
+                "DRIVERLESS_AI_CONFIG_FILE_PATH": {
+                     "name": "DAI Config Filepath",
                      "description": "Environmental Variable for Location of config.toml",
                      "type": "STR",
                      "positional": true,
