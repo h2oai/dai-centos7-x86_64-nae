@@ -13,7 +13,7 @@ echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 
 CONFIG_FILE=$4
 
-if [ -f "$config_file"]
+if [ -f "$CONFIG_FILE"]
 then
   cp $CONFIG_FILE "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
   ls $DRIVERLESS_AI_CONFIG_FILE_PATH
