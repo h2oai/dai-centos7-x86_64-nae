@@ -49,14 +49,6 @@
                      "positional": true,
                      "required": true
                 },
-                "-f": {
-                     "name": "DAI Config File",
-                     "description": "Driverless AI configuration file, config.toml",
-                     "type": "STR",
-                     "positional": true,
-                     "variable": true,
-                     "required": false
-                },
                 "-e": {
                      "name": "DRIVERLESS_AI_CONFIG_FILE_PATH",
                      "description": "Environmental Variable for Location of config.toml",
