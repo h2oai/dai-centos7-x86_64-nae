@@ -7,6 +7,8 @@ CONFIG_LOC="$1"
 
 export DRIVERLESS_AI_CONFIG_FILE_PATH=$CONFIG_LOC
 
+printenv
+
 echo "Starting Driverless AI"
 sudo nvidia-smi -pm 1
 /opt/h2oai/dai/run-h2oai.sh
