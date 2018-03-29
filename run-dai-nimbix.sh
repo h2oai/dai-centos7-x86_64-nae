@@ -3,11 +3,8 @@
 set -e
 set -x
 
-CONFIG_LOC="$1"
-
-export DRIVERLESS_AI_CONFIG_FILE_PATH=$CONFIG_LOC
-
-printenv
+echo "Arguement One: $1"
+echo "Arguement Two: $2"
 
 echo "Starting Driverless AI"
 sudo nvidia-smi -pm 1
