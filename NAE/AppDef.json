@@ -49,14 +49,6 @@
                      "positional": true,
                      "required": true
                 },
-                "configfile": {
-                     "name": "config.toml file",
-                     "desscription": "toml file containing configuration details for DAI",
-                     "type": "FILE",
-                     "filter": "*.toml",
-                     "positional": true,
-                     "required": false
-                },
                 "DRIVERLESS_AI_CONFIG_FILE_PATH": {
                      "name": "DAI Config Filepath",
                      "description": "Environmental Variable for Location of config.toml",
@@ -72,7 +64,16 @@
            "interactive": true,
            "name": "SSH",
            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
-           "parameters": {}
+           "parameters": {
+                "DRIVERLESS_AI_CONFIG_FILE_PATH": {
+                     "name": "DAI Config Filepath",
+                     "description": "Environmental Variable for Location of config.toml",
+                     "type": "STR",
+                     "positional": true,
+                     "variable": true,
+                     "required": false
+                }
+           }
       }
     },
     "image": {
