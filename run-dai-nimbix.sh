@@ -8,11 +8,18 @@ echo "Arguement Two: $2"
 echo "Arguement Three: $3"
 echo "Arguement Four: $4"
 
-export DRIVERLESS_AI_CONFIG_FILE_PATH="/opt/h2oai/dai/"
+export DRIVERLESS_AI_CONFIG_FILE_PATH="/opt/h2oai/dai"
 echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 
-cp $4 "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
-ls $DRIVERLESS_AI_CONFIG_FILE_PATH
+config_file = $4
+
+if [ -f "$config_file"]
+then
+  cp $config_file "$DRIVERLESS_AI_CONFIG_FILE_PATH/config.toml"
+  ls $DRIVERLESS_AI_CONFIG_FILE_PATH
+else
+  echo "No Configuration File Provided"
+fi
 
 echo "Starting Driverless AI"
 sudo nvidia-smi -pm 1
