@@ -19,19 +19,69 @@
         "OBJECT"
     ],
     "commands": {
-      "DAI": {
+        "DAI": {
             "path": "/run-dai-nimbix.sh",
             "interactive": true,
             "name": "DAI Server",
             "description": "Run the DAI Server",
-            "parameters": {}
+            "parameters": {
+                "-l": {
+                    "name": "-l",
+                    "description": "-l",
+                    "type": "CONST",
+                    "value": "-l",
+                    "positional": true,
+                    "required": true
+                },
+                "-c": {
+                    "name": "-c",
+                    "description": "-c",
+                    "type": "CONST",
+                    "value": "-c",
+                    "positional": true,
+                    "required": true
+                },
+                "command": {
+                    "name": "Command",
+                    "description": "command to launch DAI Server",
+                    "type": "CONST",
+                    "value": "/run-dai-nimbix.sh",
+                    "positional": true,
+                    "required": true
+                },
+                "gpus": {
+                    "name": "num_gpus",
+                    "description": "number of GPUs available to the machine",
+                    "type": "CONST",
+                    "value": "%TGPUS%",
+                    "positional": true,
+                    "required": true
+                },
+                "config": {
+                    "name": "Config File",
+                    "description": "Configuration File for Driverless AI",
+                    "type": "FILE",
+                    "filter": "*.toml",
+                    "positional": true,
+                    "required": false
+                }
+            }
         },
-      "SSH": {
-           "path": "/sbin/init",
-           "interactive": true,
-           "name": "SSH",
-           "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
-           "parameters": {}
+        "SSH": {
+            "path": "/sbin/init",
+            "interactive": true,
+            "name": "SSH",
+            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
+            "parameters": {
+                "config": {
+                    "name": "Config File",
+                    "description": "Configuration File for Driverless AI",
+                    "type": "FILE",
+                    "filter": "*.toml",
+                    "positional": true,
+                    "required": false
+                }
+            }
         }
     },
     "image": {

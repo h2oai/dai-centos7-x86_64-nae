@@ -13,7 +13,7 @@ RUN mkdir -p /usr/lib/JARVICE && cp -a /tmp/image-common-master/tools /usr/lib/J
 RUN cp -a /tmp/image-common-master/etc /etc/JARVICE && chmod 755 /etc/JARVICE && rm -rf /tmp/image-common-master
 RUN mkdir -m 0755 /data && chown nimbix:nimbix /data
 
-RUN yum -y install yum-plugin-ovl && yum -y update && yum -y install java 
+RUN yum -y install yum-plugin-ovl && yum -y update && yum -y install java
 
 RUN curl https://s3.amazonaws.com/artifacts.h2o.ai/releases/ai/h2o/dai/1.0.25/x86_64-centos7/dai-1.0.25-1.x86_64.rpm --output dai-1.0.25-1.x86_64.rpm
 
@@ -28,6 +28,8 @@ EXPOSE 54321
 COPY run-dai-nimbix.sh /run-dai-nimbix.sh
 
 # Nimbix Integrations
+COPY NAE/url.txt /etc/NAE/url.txt
+COPY NAE/help.html /etc/NAE/help.html
 COPY NAE/AppDef.json /etc/NAE/AppDef.json
 COPY NAE/AppDef.png /etc//NAE/default.png
 COPY NAE/screenshot.png /etc/NAE/screenshot.png
