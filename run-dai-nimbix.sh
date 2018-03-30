@@ -16,15 +16,6 @@ else
 fi
 
 echo "Starting Driverless AI"
-NUM_GPU=%TGPUS%
-echo "$NUM_GPU"
-
-if [ NUM_GPU -gt 0 ]
-then
-  sudo nvidia-smi -pm 1
-else
-  echo "No GPUs Available, Running CPU Only"
-fi
-
+sudo nvidia-smi -pm 1
 /opt/h2oai/dai/run-h2oai.sh
 tail -f /opt/h2oai/dai/log/h2oai.out
