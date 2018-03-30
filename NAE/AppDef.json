@@ -29,7 +29,7 @@
                         "name": "gpus",
                         "description": "number of gpus available",
                         "type": "CONST",
-                        "value": %TGPUS%,
+                        "value": "%TGPUS%",
                         "positional": true,
                         "required": true
                    },
