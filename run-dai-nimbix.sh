@@ -16,7 +16,7 @@ else
 fi
 
 echo "Starting Driverless AI"
-NUM_GPU=$1
+NUM_GPU=%TGPUS%
 echo "$NUM_GPU"
 
 if [ NUM_GPU -gt 0 ]

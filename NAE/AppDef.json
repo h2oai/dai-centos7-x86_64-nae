@@ -25,11 +25,11 @@
               "name": "DAI Server",
               "description": "Run the DAI Server",
               "parameters": {
-                   "gpus": {
-                        "name": "gpus",
-                        "description": "number of gpus available",
+                   "-l": {
+                        "name": "-l",
+                        "description": "-l",
                         "type": "CONST",
-                        "value": "%TGPUS%",
+                        "value": "-l",
                         "positional": true,
                         "required": true
                    },
