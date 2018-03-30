@@ -16,6 +16,7 @@ else
 fi
 
 echo "Starting Driverless AI"
+
 if [ $4 -gt 0 ]
 then
   sudo nvidia-smi -pm 1
