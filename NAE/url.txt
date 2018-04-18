@@ -1,1 +1,1 @@
-https://%PUBLICADDR%:12345/
+http://%PUBLICADDR%:12345/
