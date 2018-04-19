@@ -15,9 +15,9 @@ RUN mkdir -m 0755 /data && chown nimbix:nimbix /data
 
 RUN yum -y install yum-plugin-ovl && yum -y update && yum -y install java
 
-RUN curl https://s3.amazonaws.com/artifacts.h2o.ai/releases/ai/h2o/dai/1.0.30/x86_64-centos7/dai-1.0.30-1.x86_64.rpm --output dai-1.0.30-1.x86_64.rpm
+RUN curl https://s3.amazonaws.com/artifacts.h2o.ai/releases/ai/h2o/dai/rel-1.1.0-5/x86_64-centos7/dai-1.1.0-1.x86_64.rpm
 
-RUN rpm -ivh dai-1.0.30-1.x86_64.rpm
+RUN rpm -ivh dai-1.1.0-1.x86_64.rpm
 
 RUN chown -R nimbix:nimbix /opt/h2oai
 
