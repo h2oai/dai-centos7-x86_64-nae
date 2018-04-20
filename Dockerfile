@@ -5,7 +5,7 @@ RUN yum -y install yum-plugin-ovl && \
     yum -y update && \
     yum -y install java sudo zip curl epel-release && \
     yum update && \
-    yum install nginx
+    yum -y install nginx
 
 RUN curl https://s3.amazonaws.com/artifacts.h2o.ai/releases/ai/h2o/dai/rel-1.1.0-5/x86_64-centos7/dai-1.1.0-1.x86_64.rpm --output dai-1.1.0-1.x86_64.rpm && \
     rpm -ivh dai-1.1.0-1.x86_64.rpm
