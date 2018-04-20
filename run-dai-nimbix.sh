@@ -28,4 +28,4 @@ fi
 
 sudo /usr/sbin/nginx
 sudo -H -u dai /opt/h2oai/dai/run-dai.sh
-tail -f /opt/h2oai/dai/log/dai.out
+sudo tail -f /opt/h2oai/dai/log/dai.out
