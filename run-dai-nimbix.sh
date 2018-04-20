@@ -26,6 +26,6 @@ else
   echo "No GPUs Available, CPU Only"
 fi
 
-/usr/sbin/nginx
+sudo /usr/sbin/nginx
 sudo -H -u dai /opt/h2oai/dai/run-h2oai.sh
 tail -f /opt/h2oai/dai/log/dai.out

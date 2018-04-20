@@ -1,0 +1,26 @@
+# HTTPS server
+#
+server {
+	listen 443;
+
+	root html;
+	index index.html index.htm;
+
+	ssl on;
+	ssl_certificate /etc/JARVICE/cert.pem;
+	ssl_certificate_key /etc/JARVICE/cert.pem;
+
+	ssl_session_timeout 5m;
+
+	ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+	ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
+	ssl_prefer_server_ciphers on;
+
+	location / {
+	 	proxy_pass http://localhost:12345;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_set_header Origin "";
+	}
+}
