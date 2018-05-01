@@ -9,8 +9,8 @@ echo "$DRIVERLESS_AI_CONFIG_FILE_PATH"
 if [ -z "$5" ]
 then
   echo "No Configuration File Provided"
-#  export DRIVERLESS_AI_AUTHENTICATION_METHOD="local"
-#  export DRIVERLESS_AI_LOCAL_HTPASSWD_FILE="/etc/JARVICE/htpasswd"
+  export DRIVERLESS_AI_AUTHENTICATION_METHOD="local"
+  export DRIVERLESS_AI_LOCAL_HTPASSWD_FILE="/etc/JARVICE/htpasswd"
 else
   echo "Making Configuration File Available for DAI"
   CONFIG_FILE="$5"
@@ -26,6 +26,5 @@ else
   echo "No GPUs Available, CPU Only"
 fi
 
-sudo /usr/sbin/nginx
-sudo -H -u dai /opt/h2oai/dai/run-dai.sh
+sudo /sbin/init
 sudo tail -f /opt/h2oai/dai/log/dai.out
