@@ -20,12 +20,20 @@
     ],
     "commands": {
         "DAI": {
-            "path": "/sbin/init",
+            "path": "/run-dai-nimbix.sh",
             "interactive": true,
             "name": "DAI Server",
             "description": "Run the DAI Server",
             "parameters": {}
             }
+    },
+    "SSH": {
+            "path": "/sbin/init",
+            "interactive": true,
+            "name": "SSH",
+            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
+            "parameters": {}
+           }
     },
     "image": {
         "type": "image/png",
