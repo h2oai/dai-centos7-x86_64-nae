@@ -20,7 +20,7 @@
     ],
     "commands": {
         "DAI": {
-            "path": "/run-dai-nimbix.sh",
+            "path": "/sbin/init",
             "interactive": true,
             "name": "DAI Server",
             "description": "Run the DAI Server",
@@ -67,22 +67,6 @@
                 }
             }
         },
-        "SSH": {
-            "path": "/sbin/init",
-            "interactive": true,
-            "name": "SSH",
-            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
-            "parameters": {
-                "config": {
-                    "name": "Config File",
-                    "description": "Configuration File for Driverless AI",
-                    "type": "FILE",
-                    "filter": "*.toml",
-                    "positional": true,
-                    "required": false
-                }
-            }
-        }
     },
     "image": {
         "type": "image/png",
