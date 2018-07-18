@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.2-cudnn7-runtime-centos7
+FROM nvidia/cuda:9.0-cudnn7-runtime-centos7
 MAINTAINER H2o.ai <ops@h2o.ai>
 
 RUN yum -y install yum-plugin-ovl && \
