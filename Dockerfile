@@ -14,6 +14,8 @@ RUN curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
     | bash
 
+RUN /opt/h2oai/dai/dai-env.sh python -m pip install tensorflow-gpu tensorflow
+
 EXPOSE 22
 EXPOSE 12345
 EXPOSE 54321
@@ -21,6 +23,7 @@ EXPOSE 443
 EXPOSE 80
 
 COPY run-dai-nimbix.sh /run-dai-nimbix.sh
+COPY rc.local /etc/rc.local
 
 # Nginx Configuration
 RUN mkdir /etc/nginx/sites-enabled
