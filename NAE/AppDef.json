@@ -1,6 +1,6 @@
 {
-    "name": "DriverlessAI 1.2.2 Centos7 x86_64",
-    "description": "rel-1.2.2 x86_64",
+    "name": "DriverlessAI 1.3.0 Centos7 x86_64",
+    "description": "rel-1.3.0 x86_64",
     "author": "h2o.ai",
     "licensed": true,
     "classifications": [
@@ -20,12 +20,19 @@
     ],
     "commands": {
         "DAI": {
-            "path": "/sbin/init",
+            "path": "/run-dai-nimbix.sh",
             "interactive": true,
             "name": "DAI Server",
             "description": "Run the DAI Server",
             "parameters": {}
-            }
+            },
+    "SSH": {
+            "path": "/sbin/init",
+            "interactive": true,
+            "name": "SSH",
+            "description": "Launch a session with a SSH server, Connection address and credentials will appear in your web browser once available.",
+            "parameters": {}
+           }
     },
     "image": {
         "type": "image/png",

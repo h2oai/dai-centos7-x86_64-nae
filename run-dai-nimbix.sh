@@ -6,4 +6,3 @@ echo "Starting Driverless AI"
 
 sudo nvidia-smi -pm 1
 sudo systemctl restart dai
-sudo tail -f /opt/h2oai/dai/log/dai.out

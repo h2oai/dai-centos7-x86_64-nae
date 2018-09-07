@@ -6,9 +6,9 @@ RUN yum -y install yum-plugin-ovl && \
     yum -y update && \
     yum -y install java sudo zip curl nginx
 
-RUN curl http://artifacts.h2o.ai.s3.amazonaws.com/releases/ai/h2o/dai/rel-1.2.2-6/x86_64-centos7/dai-1.2.2-1.x86_64.rpm --output dai-1.2.2-1.x86_64.rpm && \
-    rpm -ivh dai-1.2.2-1.x86_64.rpm && \
-    rm dai-1.2.2-1.x86_64.rpm
+RUN curl https://s3.amazonaws.com/artifacts.h2o.ai/releases/ai/h2o/dai/rel-1.3.0-15/x86_64-centos7/dai-1.3.0-1.x86_64.rpm --output dai-1.3.0-1.x86_64.rpm && \
+    rpm -ivh dai-1.3.0-1.x86_64.rpm && \
+    rm dai-1.3.0-1.x86_64.rpm
 
 RUN curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
